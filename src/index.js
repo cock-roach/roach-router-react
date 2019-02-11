@@ -1,1 +1,2 @@
-export default from './js/HelloWorld';
+export MixspaLink from './MixspaLink';
+export MixspaRouteContainer from './MixspaRouteContainer';
