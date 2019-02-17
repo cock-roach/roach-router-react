@@ -1,5 +1,5 @@
-# Node Jest React Component stencil
-This is a stencil for react component base on node and jest.
+# mixspa-react
+Mixspa-React wrapper some Component to make use Mixspa simple.
 
 ## Current Status:
 
@@ -9,78 +9,73 @@ This is a stencil for react component base on node and jest.
 
 [![NPM](https://nodei.co/npm/@mixspa/react.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@mixspa/react/)
 
+## How to use?
 
-## Features:
+There are three wrapper Components.
 
-* Support Publish your package to git & npm with ci.
-* Support CircleCi for pipeline.
-* Support ES7 & ES6 syntax.
-* Support ESlint to check the code.
-* Support Jest to test your code.
-* Support Yarn audit to do security check for dependencies.
+### MixspaAppLoader: for load app.
 
-## Development:
+Using it like this:
 
-### Setup
+```js
+import MixspaLoader from '@mixspa/loader';
+import { MixspaLink } from '@mixspa/react';
 
-Clone this stencil and replace `@mixspa/react` with your package name.
+MixspaLoader.addAppInfo({
+  tag: 'app-demo',
+  name: 'AppDemo',
+  assets: ['https://www.app-demo.com/app.js', 'https://www.app-demo.com/app.css']
+});
 
-```
-$> git clone git@github.com:mixspa/mixspa-react.git
-```
+const Loading = () => <div>Loading...</div>
 
-### Install dependencies
-
-```
-$> yarn install
-```
-
-### Compile code
-
-```
-$> yarn babel
-# or run babel in watch mode
-$> yarn babel:watch
+const MixspaContent = () => (
+  <div>
+    <MixspaAppLoader name="AppDemo" loading={ Loading }/>
+  </div>
+);
+export default MixspaContent;
 ```
 
-### Generate distribution code
+### MixspaLink: for link to another mixspa with event.
 
-```
-$> yarn build
-```
+Using it like this:
 
-### Linting
+```js
+import { MixspaLink } from '@mixspa/react';
 
-```
-$> yarn lint
-```
-
-### Testing
-
-```
-$> yarn test
-# or run the test in watch mode
-$> yarn test:watch
+const NavBar = () => (
+  <div>
+    <MixspaLink to="/menu-a"/>
+    <MixspaLink to="/menu-b"/>
+  </div>
+);
+export default NavBar;
 ```
 
-### Security check
+### MixspaRouteApp: for handle url event from other mixspa.
 
-```
-$> yarn audit
-```
+Using it like this:
 
-### Setup CI
+```js
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { Route, Switch } from "react-router-dom";
+import { MixspaRouteApp } from '@mixspa/react';
 
-* Update the circleci config
-* Setup the ci into circleci site.
-
-
-### Start in local
-
-```
-$> yarn start
+ReactDOM.render(
+  <BrowserRouter>
+    <MixspaRouteApp>
+      <Switch>
+        <Route path="/test-a"/>
+        <Route path="/test-b"/>
+      </Switch>
+    </MixspaRouteApp>
+  </BrowserRouter>,
+  document.getElementById('app')
+);
 ```
 
 ## License
 
-mixspa-mixspa-react is released under the [MIT license](https://github.com/mixspa/mixspa-mixspa-react/blob/master/LICENSE).
+mixspa-mixspa-react is released under the [MIT license](https://github.com/mixspa/mixspa-react/blob/master/LICENSE).

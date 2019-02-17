@@ -1,6 +1,6 @@
 {
   "name": "@mixspa/react",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "This is a tools for mixspa with react",
   "main": "lib/index.js",
   "engines": {
