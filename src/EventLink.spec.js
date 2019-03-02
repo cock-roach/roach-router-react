@@ -1,17 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Link } from 'react-router-dom';
-import MixspaEvent from '@mixspa/events';
-import MixspaLink from './MixspaLink';
+import Mixspa from '@mixspa/core';
+import EventLink from './EventLink';
 
-describe('MixspaLink', () => {
+describe('EventLink', () => {
   let clickMock;
   let eventMock;
-  let mixspaLink;
+  let eventLink;
 
   beforeEach(() => {
     clickMock = jest.fn();
-    MixspaEvent.emit = jest.fn();
+    Mixspa.emit = jest.fn();
     eventMock = {
       target: {
         getAttribute: jest.fn(() => '/test')
@@ -21,35 +21,35 @@ describe('MixspaLink', () => {
 
   describe('#render', () => {
     beforeEach(() => {
-      mixspaLink = shallow(<MixspaLink to="/test">Hello</MixspaLink>);
+      eventLink = shallow(<EventLink to="/test">Hello</EventLink>);
     });
 
     it('should render a hello message', () => {
-      expect(mixspaLink.find(Link).children().text()).toBe('Hello');
+      expect(eventLink.find(Link).children().text()).toBe('Hello');
     });
 
     it('should link to test', () => {
-      expect(mixspaLink.find(Link).prop('to')).toBe('/test');
+      expect(eventLink.find(Link).prop('to')).toBe('/test');
     });
 
     it('should emit event when click event', () => {
-      mixspaLink.simulate('click', eventMock);
-      expect(MixspaEvent.emit).toHaveBeenCalledWith('mixspa:url:changed', '/test');
+      eventLink.simulate('click', eventMock);
+      expect(Mixspa.emit).toHaveBeenCalledWith('mixspa:url:changed', '/test');
     });
   });
 
   describe('#on click', () => {
     beforeEach(() => {
-      mixspaLink = shallow(<MixspaLink to="/test" onClick={ clickMock }>Hello</MixspaLink>);
+      eventLink = shallow(<EventLink to="/test" onClick={ clickMock }>Hello</EventLink>);
     });
 
     it('should emit event when click event', () => {
-      mixspaLink.simulate('click', eventMock);
-      expect(MixspaEvent.emit).toHaveBeenCalledWith('mixspa:url:changed', '/test');
+      eventLink.simulate('click', eventMock);
+      expect(Mixspa.emit).toHaveBeenCalledWith('mixspa:url:changed', '/test');
     });
 
     it('should invoke click callback when click event', () => {
-      mixspaLink.simulate('click', eventMock);
+      eventLink.simulate('click', eventMock);
       expect(clickMock).toHaveBeenCalledWith(eventMock);
     });
   });
