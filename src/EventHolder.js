@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import Mixspa from '@mixspa/core';
 import { withRouter } from 'react-router';
 
-class EventSlot extends React.Component {
+class EventHolder extends React.Component {
   static propTypes = {
-    history: PropTypes.object
+    history: PropTypes.object,
+    children: PropTypes.node
   };
 
   componentDidMount() {
@@ -15,8 +16,8 @@ class EventSlot extends React.Component {
   }
 
   render() {
-    return null;
+    return this.props.children;
   }
 }
 
-export default withRouter(EventSlot);
+export default withRouter(EventHolder);
