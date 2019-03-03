@@ -31,8 +31,6 @@ jobs:
       - checkout
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
-      - restore_cache:
-          key: app-build-cache-{{ checksum "package.json" }}
       - run:
           name: Upgrade yarn
           command: sudo npm install --global yarn
@@ -45,8 +43,20 @@ jobs:
       - run:
           name: Test
           command: yarn test
-
   release:
+    docker:
+      - image: circleci/node:8
+    working_directory: ~/mixspa-react
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - restore_cache:
+          key: app-build-cache-{{ checksum "package.json" }}
+      - run:
+          name: Git release
+          command: bash ./ci/release.sh
+  publish:
     docker:
       - image: circleci/node:8
     working_directory: ~/mixspa-react
@@ -60,15 +70,12 @@ jobs:
           name: Set Config
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run:
-          name: Git release
-          command: bash ./ci/release-git.sh
-      - run:
           name: Npm release
-          command: bash ./ci/release-npm.sh
+          command: bash ./ci/publish.sh
 
 workflows:
   version: 2
-  build-test-release:
+  build_test_release_publish:
     jobs:
       - build
       - test:
@@ -81,3 +88,9 @@ workflows:
             branches:
               only:
                 - master
+      - publish:
+          requires:
+            - release
+          filters:
+            tags:
+              only: /^v.*/
