@@ -5,7 +5,7 @@ const createApp = (tag, render) => {
   Mixspa.define({
     tag: tag,
     render: (parentEl) => {
-      ReactDOM.render(render(), parentEl);
+      ReactDOM.render(render(Mixspa.getAttributes(parentEl)), parentEl);
     },
     unmount: (parentEl) => {
       ReactDOM.unmountComponentAtNode(parentEl);
