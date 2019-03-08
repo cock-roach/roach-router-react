@@ -4,7 +4,7 @@ import Mixspa from '@mixspa/core';
 
 class AppLoader extends React.Component {
   static propTypes = {
-    name: PropTypes.string.isRequired,
+    appId: PropTypes.string.isRequired,
     className: PropTypes.string,
     onError: PropTypes.func,
     children: PropTypes.node
@@ -21,20 +21,20 @@ class AppLoader extends React.Component {
   }
 
   componentDidMount() {
-    const { name, onError } = this.props;
-    Mixspa.load(name).then(appInfo => {
+    const { appId, onError } = this.props;
+    Mixspa.load(appId).then(appInfo => {
       this.setState({
         isLoading: false,
         appInfo: appInfo
       });
-    }).catch(error => onError(error, name));
+    }).catch(error => onError(error, appId));
   }
 
   render() {
-    const { name, className, children, ...rest } = this.props;
+    const { appId, className, children, ...rest } = this.props;
     const { isLoading, appInfo } = this.state;
     return (
-      <div className = { className || name.toLowerCase() }>
+      <div className = { className || appId.toLowerCase() }>
         { isLoading ? children : <appInfo.tag {...rest}/> }
       </div>
     );

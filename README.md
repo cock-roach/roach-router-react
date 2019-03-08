@@ -1,5 +1,5 @@
 # mixspa-react
-Mixspa-React wrapper some Component to make use Mixspa simple.
+Mixspa-React is a wrapper for mixspa-core.
 
 ## Current Status:
 
@@ -9,68 +9,72 @@ Mixspa-React wrapper some Component to make use Mixspa simple.
 
 [![NPM](https://nodei.co/npm/@mixspa/react.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@mixspa/react/)
 
-## How to use?
+## What it come from?
 
-There are three wrapper Components.
+Pleas reference here: [mixspa-core](https://github.com/mixspa/mixspa-core)
 
-### MixspaAppLoader: for load app.
+## Apis for this library
 
-Using it like this:
+### createApp: create a mixspa app.
 
 ```js
-import MixspaLoader from '@mixspa/loader';
-import { MixspaLink } from '@mixspa/react';
+import { createApp } from '@mixspa/react';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
 
-MixspaLoader.addAppInfo({
-  tag: 'app-demo',
-  name: 'AppDemo',
-  assets: ['https://www.app-demo.com/app.js', 'https://www.app-demo.com/app.css']
-});
+createApp(
+  'app-tag',
+  (props) => (
+    <BrowserRouter baseName={ props.baseName }>
+      <App />
+    </BrowserRouter>
+  )
+);
+```
+
+### AppLoader: load a mixspa app.
+
+```js
+import { AppLoader } from '@mixspa/react';
 
 const Loading = () => <div>Loading...</div>
 
-const MixspaContent = () => (
+const Content = () => (
   <div>
-    <MixspaAppLoader name="AppDemo" loading={ Loading }/>
+    <AppLoader appId="appId" loading={ Loading }/>
   </div>
 );
-export default MixspaContent;
 ```
 
-### MixspaLink: for link to another mixspa with event.
-
-Using it like this:
+### EventLink: This link will send a event to event bus.
 
 ```js
-import { MixspaLink } from '@mixspa/react';
+import { EventLink } from '@mixspa/react';
 
 const NavBar = () => (
   <div>
-    <MixspaLink to="/menu-a"/>
-    <MixspaLink to="/menu-b"/>
+    <EventLink to="/menu-a"/>
+    <EventLink to="/menu-b"/>
   </div>
 );
-export default NavBar;
 ```
 
-### MixspaRouteApp: for handle url event from other mixspa.
-
-Using it like this:
+### EventHolder: Receive event and handle url change event.
 
 ```js
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Switch } from "react-router-dom";
-import { MixspaRouteApp } from '@mixspa/react';
+import { EventHolder } from '@mixspa/react';
 
 ReactDOM.render(
   <BrowserRouter>
-    <MixspaRouteApp>
+    <EventHolder>
       <Switch>
         <Route path="/test-a"/>
         <Route path="/test-b"/>
       </Switch>
-    </MixspaRouteApp>
+    </EventHolder>
   </BrowserRouter>,
   document.getElementById('app')
 );
@@ -78,4 +82,4 @@ ReactDOM.render(
 
 ## License
 
-mixspa-mixspa-react is released under the [MIT license](https://github.com/mixspa/mixspa-react/blob/master/LICENSE).
+mixspa-react is released under the [MIT license](https://github.com/mixspa/mixspa-react/blob/master/LICENSE).
