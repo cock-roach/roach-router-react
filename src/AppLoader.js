@@ -15,17 +15,30 @@ class AppLoader extends React.Component {
     onError: () => {}
   };
 
-  constructor(props) {
-    super(props);
-    this.state = { isLoading: true };
+  state = { };
+
+  static getDerivedStateFromProps(props, state) {
+    return {
+      isLoading: !!(props.appId) && props.appId != state.prevAppId
+    };
   }
 
   componentDidMount() {
-    const { appId, onError } = this.props;
+    this.loadApp(this.props.appId, this.props.onError);
+  }
+
+  componentDidUpdate() {
+    if (this.state.isLoading) {
+      this.loadApp(this.props.appId, this.props.onError);
+    }
+  }
+
+  loadApp(appId, onError) {
     Mixspa.load(appId).then(appInfo => {
       this.setState({
         isLoading: false,
-        appInfo: appInfo
+        appInfo: appInfo,
+        prevAppId: appId
       });
     }).catch(error => onError(error, appId));
   }
