@@ -1,0 +1,12 @@
+.nav {
+  width: 300px;
+  padding: 30px;
+  margin: auto;
+  .link {
+    font-weight: bold;
+    color: #2c3e50;
+    &:active {
+      color: #42b983;
+    }
+  }
+}

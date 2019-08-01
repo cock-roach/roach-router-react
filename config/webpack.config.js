@@ -8,7 +8,9 @@ module.exports = {
     contentBase: './dist'
   },
   entry: {
-    app: './example/index.js'
+    main: './example/index.js',
+    'app-one': './example/app-one/index.js',
+    'app-two': './example/app-two/index.js'
   },
   output: {
     filename: '[name].bundle.js',
@@ -41,6 +43,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: 'example/index.html' })
+    new HtmlWebpackPlugin({
+      template: 'example/index.html',
+      chunks: ['main']
+    })
   ]
 };
