@@ -4,12 +4,13 @@
     "eslint:recommended",
     "plugin:jest/recommended",
     "plugin:react/recommended",
+    "plugin:testing-library/recommended"
   ],
   env: {
-    es6: true,
-    node: true,
-    jest: true,
-    browser: true
+    "es6": true,
+    "node": true,
+    "jest/globals": true,
+    "browser": true
   },
   parserOptions: {
     ecmaVersion: 7,
@@ -18,7 +19,8 @@
   },
   plugins: [
     "jest",
-    "react"
+    "react",
+    "testing-library"
   ],
   settings: {
     react: {
