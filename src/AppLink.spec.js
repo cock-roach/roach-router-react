@@ -1,56 +1,34 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import MixspaLink from '@mixspa/core/lib/link';
+import { render, fireEvent } from '@testing-library/react'
 import AppLink from './AppLink';
 
 describe('AppLink', () => {
-  let appLink;
-  let clickMock;
-  let eventMock;
-
   beforeEach(() => {
-    clickMock = jest.fn();
     MixspaLink.emitLink = jest.fn();
-    eventMock = {
-      preventDefault: jest.fn(),
-      target: {
-        getAttribute: jest.fn(() => '/test')
-      }
-    };
   });
 
-  describe('#render', () => {
-    beforeEach(() => {
-      appLink = shallow(<AppLink base="http://www.test.com" to="/test">Hello</AppLink>);
-    });
-
-    it('should render a hello message', () => {
-      expect(appLink.find('a').text()).toBe('Hello');
-    });
-
-    it('should link to test', () => {
-      expect(appLink.find('a').prop('href')).toBe('http://www.test.com/test');
-    });
-
-    it('should emit event when click event', () => {
-      appLink.simulate('click', eventMock);
-      expect(MixspaLink.emitLink).toHaveBeenCalledWith('/test');
-    });
+  it('should render link', () => {
+    const { getByTestId } = render(<AppLink data-testid="test" to="http://www.test.com/test">Go</AppLink>);
+    expect(getByTestId('test')).toHaveTextContent('Go');
+    expect(getByTestId('test')).toHaveAttribute('href', 'http://www.test.com/test');
   });
 
-  describe('#on click', () => {
-    beforeEach(() => {
-      appLink = shallow(<AppLink base="http://www.test.com" to="/test" onClick={ clickMock }>Hello</AppLink>);
-    });
+  it('should go to test url when click event', () => {
+    const { getByTestId } = render(<AppLink data-testid="test" to="http://www.test.com/test">Go</AppLink>);
+    fireEvent.click(getByTestId('test'));
+    expect(MixspaLink.emitLink).toHaveBeenCalledWith('http://www.test.com/test');
+  });
 
-    it('should emit event when click event', () => {
-      appLink.simulate('click', eventMock);
-      expect(MixspaLink.emitLink).toHaveBeenCalledWith('/test');
-    });
+  it('should stop go to url when link callback return false', () => {
+    const { getByTestId } = render(<AppLink data-testid="test" to="http://www.test.com/test" onLink={ () => false }>Go</AppLink>);
+    fireEvent.click(getByTestId('test'));
+    expect(MixspaLink.emitLink).not.toHaveBeenCalled();
+  });
 
-    it('should invoke click callback when click event', () => {
-      appLink.simulate('click', eventMock);
-      expect(clickMock).toHaveBeenCalledWith(eventMock);
-    });
+  it('should go to url when link callback return true', () => {
+    const { getByTestId } = render(<AppLink data-testid="test" to="http://www.test.com/test" onLink={ () => true }>Go</AppLink>);
+    fireEvent.click(getByTestId('test'));
+    expect(MixspaLink.emitLink).toHaveBeenCalledWith('http://www.test.com/test');
   });
 });

@@ -2,24 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MixspaLink from '@mixspa/core/lib/link';
 
-const handleClick = (e, next) => {
-  next && next(e);
+const handleClick = (onLink, e) => {
+  let shouldCall = onLink ? onLink(e) : true;
   e.preventDefault();
-  MixspaLink.emitLink(e.target.getAttribute('href'));
+  shouldCall && MixspaLink.emitLink(e.target.getAttribute('href'));
 };
 
-const AppLink = ({base, to, onClick, ...rest}) => (
-  <a href={ base + to } onClick={ e => handleClick(e, onClick) } {...rest}/>
+const AppLink = ({to, onLink, ...rest}) => (
+  <a href={ to } onClick={ e => handleClick(onLink, e) } {...rest}/>
 );
 
 AppLink.propTypes = {
   to: PropTypes.string.isRequired,
-  base: PropTypes.string,
-  onClick: PropTypes.func
-};
-
-AppLink.defaultProps = {
-  base: ''
+  onLink: PropTypes.func
 };
 
 export default AppLink;
