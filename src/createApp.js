@@ -1,14 +1,14 @@
 import ReactDOM from 'react-dom';
-import Mixspa from '@mixspa/core';
+import MixspaApp from '@mixspa/core/lib/app';
 
 const createApp = (tag, render) => {
-  Mixspa.define({
+  MixspaApp.define({
     tag: tag,
-    render: (parentEl) => {
-      ReactDOM.render(render(Mixspa.getAttributes(parentEl)), parentEl);
+    render: (el) => {
+      ReactDOM.render(render(el.getAttributes()), el);
     },
-    unmount: (parentEl) => {
-      ReactDOM.unmountComponentAtNode(parentEl);
+    unmount: (el) => {
+      ReactDOM.unmountComponentAtNode(el);
     }
   });
 };
