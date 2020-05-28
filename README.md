@@ -32,6 +32,19 @@ createApp(
 );
 ```
 
+### AppLink: This link will send a event to event bus.
+
+```js
+import { AppLink } from '@mixspa/react';
+
+const NavBar = () => (
+  <div>
+    <AppLink to="/menu-a"/>
+    <AppLink to="/menu-b"/>
+  </div>
+);
+```
+
 ### AppLoader: load a mixspa app.
 
 ```js
@@ -41,40 +54,27 @@ const Loading = () => <div>Loading...</div>
 
 const Content = () => (
   <div>
-    <AppLoader appId="appId" loading={ Loading }/>
+    <AppLoader appId="appId" renderLoading={ () => <Loading /> }/>
   </div>
 );
 ```
 
-### EventLink: This link will send a event to event bus.
-
-```js
-import { EventLink } from '@mixspa/react';
-
-const NavBar = () => (
-  <div>
-    <EventLink to="/menu-a"/>
-    <EventLink to="/menu-b"/>
-  </div>
-);
-```
-
-### EventHolder: Receive event and handle url change event.
+### AppContainer: Receive event and handle url change event.
 
 ```js
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Route, Switch } from "react-router-dom";
-import { EventHolder } from '@mixspa/react';
+import { AppContainer } from '@mixspa/react';
 
 ReactDOM.render(
   <BrowserRouter>
-    <EventHolder>
+    <AppContainer>
       <Switch>
         <Route path="/test-a"/>
         <Route path="/test-b"/>
       </Switch>
-    </EventHolder>
+    </AppContainer>
   </BrowserRouter>,
   document.getElementById('app')
 );

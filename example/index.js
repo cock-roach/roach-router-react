@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Mixspa from '@mixspa/core';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import AppContainer from '../src/AppContainer';
 import './index.scss';
 
 Mixspa.register({
@@ -18,7 +19,9 @@ Mixspa.register({
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <AppContainer>
+      <App />
+    </AppContainer>
   </BrowserRouter>,
   document.getElementById('app')
 );
